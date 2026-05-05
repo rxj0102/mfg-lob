@@ -1,0 +1,22 @@
+{
+  "lob_formation": {
+    "params": {
+      "c_crowd": 0.05,
+      "sigma": 0.1
+    },
+    "objective": 0.0011401649829251464,
+    "success": true,
+    "n_evals": 76,
+    "message": "Optimization terminated successfully."
+  },
+  "optimal_execution": {
+    "params": {
+      "eta": 0.505,
+      "phi": 0.025050000000000006
+    },
+    "objective": 6.431135490633997e-05,
+    "success": true,
+    "n_evals": 36,
+    "message": "Optimization terminated successfully."
+  }
+}

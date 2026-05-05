@@ -1,0 +1,26 @@
+{
+  "AvellanedaStoikov": {
+    "converged": true,
+    "n_iterations": 6,
+    "final_residual": 0.000881405275061961,
+    "terminal_mass": 1.0000000000000002,
+    "terminal_mean": -5.512569830069792e-18,
+    "terminal_std": 2.2786406477957306
+  },
+  "OptimalExecution": {
+    "converged": true,
+    "n_iterations": 10,
+    "final_residual": 0.0007456389178494008,
+    "terminal_mass": 1.0,
+    "terminal_mean": 0.9999999999998418,
+    "terminal_std": 0.06123724356894237
+  },
+  "LOBFormation": {
+    "converged": true,
+    "n_iterations": 9,
+    "final_residual": 0.0006513728572100541,
+    "terminal_mass": 1.0000000000000002,
+    "terminal_mean": 4.0483417400382455,
+    "terminal_std": 2.241511546511519
+  }
+}
