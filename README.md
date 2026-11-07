@@ -1,5 +1,7 @@
 # mfg-lob
 
+[![CI](https://github.com/rxj0102/mfg-lob/actions/workflows/ci.yml/badge.svg)](https://github.com/rxj0102/mfg-lob/actions/workflows/ci.yml)
+
 **Mean-Field Game solver and analysis toolkit for Limit Order Book models.**
 
 `mfg-lob` is a research-grade Python library for numerically solving and analysing
