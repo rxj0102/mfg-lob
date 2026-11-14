@@ -10,3 +10,5 @@ build/
 htmlcov/
 .ipynb_checkpoints/
 *.png
+
+.venv/
