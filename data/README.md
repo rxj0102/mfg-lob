@@ -4,7 +4,7 @@ Data utilities for `mfg-lob`.
 
 ## Synthetic data
 
-`synthetic_lob.py` — generate synthetic LOB snapshots for testing and
+`synthetic_lob.py`: generate synthetic LOB snapshots for testing and
 calibration.
 
 ```python

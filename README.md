@@ -6,7 +6,7 @@
 
 `mfg-lob` is a research-grade Python library for numerically solving and analysing
 mean-field game (MFG) models of limit order books (LOBs).  The core mathematical
-object is a coupled PDE system — a backward Hamilton-Jacobi-Bellman (HJB) equation
+object is a coupled PDE system: a backward Hamilton-Jacobi-Bellman (HJB) equation
 for the representative agent's optimal strategy, paired with a forward Fokker-Planck
 (FP) equation for the population distribution.  Together they characterise the Nash
 equilibrium in a continuum of interacting traders.
@@ -15,29 +15,29 @@ equilibrium in a continuum of interacting traders.
 
 | Framework | Many agents | Analytical structure | Convergence guarantees |
 |-----------|:-----------:|:--------------------:|:---------------------:|
-| Kyle / Glosten-Milgrom | ✗ (1–2 agents) | ✓ | — |
+| Kyle / Glosten-Milgrom | ✗ (1–2 agents) | ✓ | n/a |
 | Agent-based models | ✓ | ✗ | ✗ |
 | **mfg-lob** | **✓** | **✓** | **✓** |
 
 MFG provides the only tractable framework for modelling strategic interaction among
 a large number of heterogeneous market participants while retaining PDE-level
-mathematical structure — giving closed-form characterisation of equilibria and
+mathematical structure: giving closed-form characterisation of equilibria and
 verified convergence guarantees (Barles-Souganidis theorem).
 
 ---
 
 ## Features
 
-- **Coupled HJB-FP solver** — IMEX finite-difference discretisation with Picard
+- **Coupled HJB-FP solver**: IMEX finite-difference discretisation with Picard
   fixed-point iteration and optional Newton-Krylov acceleration
 - **Three MFG-LOB models:**
-  - `AvellanedaStoikovMFG` — market-maker inventory management with Poisson executions
-  - `OptimalExecutionMFG` — meta-order liquidation with temporary price impact
-  - `LOBFormationMFG` — equilibrium depth profile from adverse selection + congestion
-- **Equilibrium analysis** — ε-Nash verification, Price of Anarchy, comparative statics, stability
-- **Price impact** — extract ΔS(Q) from equilibrium; fit power-law exponent δ; compare to √Q law
-- **Calibration** — fit parameters to synthetic or empirical LOB data via DE + Nelder-Mead
-- **Convergence study** — verified O(Δx^{1.3–1.6}) convergence on refined grids
+  - `AvellanedaStoikovMFG`: market-maker inventory management with Poisson executions
+  - `OptimalExecutionMFG`: meta-order liquidation with temporary price impact
+  - `LOBFormationMFG`: equilibrium depth profile from adverse selection + congestion
+- **Equilibrium analysis**: ε-Nash verification, Price of Anarchy, comparative statics, stability
+- **Price impact**: extract ΔS(Q) from equilibrium; fit power-law exponent δ; compare to √Q law
+- **Calibration**: fit parameters to synthetic or empirical LOB data via DE + Nelder-Mead
+- **Convergence study**: verified O(Δx^{1.3–1.6}) convergence on refined grids
 - **459 tests** across all modules
 
 ---
@@ -217,10 +217,10 @@ The MFG-LOB system is the coupled PDE:
 ```
 
 **Notation:**
-- `u(x,t)` — value function (optimal expected cost)
-- `m(x,t)` — population density (distribution of agent states)
-- `H(x,p,m)` — Hamiltonian (encodes the optimal strategy via Pontryagin)
-- `b*(x,p,m)` — optimal drift (from the first-order condition ∂H/∂p = 0)
+- `u(x,t)`: value function (optimal expected cost)
+- `m(x,t)`: population density (distribution of agent states)
+- `H(x,p,m)`: Hamiltonian (encodes the optimal strategy via Pontryagin)
+- `b*(x,p,m)`: optimal drift (from the first-order condition ∂H/∂p = 0)
 
 **Solver:** IMEX finite differences + Thomas algorithm (O(n_x) per time step) +
 damped Picard fixed-point iteration, accelerated by Newton-Krylov near convergence.
@@ -258,16 +258,16 @@ Citation metadata is in `CITATION.cff`. GitHub turns it into a Cite this reposit
 
 ## References
 
-1. **Lasry & Lions (2007).** "Mean field games."  *Japanese Journal of Mathematics* 2, 229–260.
-2. **Huang, Malhamé & Caines (2006).** "Large population stochastic dynamic games."  *Communications in Information and Systems* 6, 221–252.
-3. **Cardaliaguet & Lehalle (2018).** "Mean field game of controls and an application to trade crowding."  *Mathematics and Financial Economics* 12, 335–363.
-4. **Avellaneda & Stoikov (2008).** "High-frequency trading in a limit order book."  *Quantitative Finance* 8, 217–224.
+1. **Lasry & Lions (2007).** *Mean field games.*  *Japanese Journal of Mathematics* 2, 229–260.
+2. **Huang, Malhamé & Caines (2006).** *Large population stochastic dynamic games.*  *Communications in Information and Systems* 6, 221–252.
+3. **Cardaliaguet & Lehalle (2018).** *Mean field game of controls and an application to trade crowding.*  *Mathematics and Financial Economics* 12, 335–363.
+4. **Avellaneda & Stoikov (2008).** *High-frequency trading in a limit order book.*  *Quantitative Finance* 8, 217–224.
 5. **Carmona & Delarue (2018).** *Probabilistic Theory of Mean Field Games with Applications* (2 vols).  Springer.
-6. **Achdou & Capuzzo-Dolcetta (2010).** "Mean field games: numerical methods."  *SIAM J. Numerical Analysis* 48, 1136–1162.
-7. **Almgren & Chriss (2001).** "Optimal execution of portfolio transactions."  *Journal of Risk* 3, 5–39.
+6. **Achdou & Capuzzo-Dolcetta (2010).** *Mean field games: numerical methods.*  *SIAM J. Numerical Analysis* 48, 1136–1162.
+7. **Almgren & Chriss (2001).** *Optimal execution of portfolio transactions.*  *Journal of Risk* 3, 5–39.
 
 ---
 
 ## License
 
-MIT — see `LICENSE`.
+MIT: see `LICENSE`.
