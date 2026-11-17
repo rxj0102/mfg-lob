@@ -55,9 +55,9 @@ class HJBSolver:
 
     The IMEX scheme at each backward step (from t_{n+1} to t_n):
 
-    (I - dt·(σ²/2)·D²) u^n = u^{n+1} - dt·f(x,α*,m^n) - dt·b*·D_upwind u^{n+1}
+    (I - dt·(σ²/2)·D²) u^n = u^{n+1} + dt·f(x,α*,m^n) + dt·b*·D_upwind u^{n+1}
 
-    where D_upwind uses upwind differences based on the sign of the optimal drift.
+    where D_upwind differences toward the side the optimal drift points to.
     """
 
     def __init__(self, grid: Grid1D, time_grid: TimeGrid, model) -> None:
@@ -91,7 +91,7 @@ class HJBSolver:
         self,
         m: np.ndarray,
         terminal_condition: np.ndarray = None,
-        bc_type: str = "dirichlet",
+        bc_type: str = "neumann",
         bc_left: float = 0.0,
         bc_right: float = 0.0,
     ) -> dict:
@@ -157,9 +157,10 @@ class HJBSolver:
             # Running cost f(x, α*, m^n)
             f_cost = self.model.running_cost(x, alpha, m_n)
 
-            # H = -f - b*·p - σ²/2·M, so u^n = u^{n+1} - dt·H
-            # = u^{n+1} - dt·f - dt·b*·p_upwind  (implicit σ²/2·D²u^n moved to LHS)
-            rhs = u_next - dt * f_cost - dt * b_star * p_upwind
+            # u is a cost to go: -u_t = f + b*·Du + σ²/2·D²u = -H.
+            # Stepping back from t_{n+1}: u^n = u^{n+1} + dt·(f + b*·Du^{n+1})
+            # + dt·σ²/2·D²u^n, with the diffusion term moved to the LHS.
+            rhs = u_next + dt * f_cost + dt * b_star * p_upwind
 
             # Step g: build and solve the implicit system
             # A u^n = rhs,  A = I - dt·(σ²/2)·D²
@@ -202,17 +203,20 @@ class HJBSolver:
         """
         Compute the upwind approximation of Du:
 
-        (Du)_i = D^- u_i  if drift_i > 0  (information flows from left)
-        (Du)_i = D^+ u_i  if drift_i < 0  (information flows from right)
+        (Du)_i = D^+ u_i  if drift_i > 0
+        (Du)_i = D^- u_i  if drift_i < 0
         (Du)_i = D^0 u_i  if drift_i = 0  (use central)
 
-        This ensures the scheme is monotone → convergence to viscosity solution.
+        The HJB is solved backward in time, so the value at x_i depends on
+        the later value at x_i + b dt: the difference is taken toward the
+        side the state moves to. With this choice the explicit step is
+        monotone when |b| dt / dx <= 1.
         """
         p_fwd = self._D_fwd @ u
         p_bwd = self._D_bwd @ u
         p_cen = self._D_cen @ u
 
-        p = np.where(drift > 0, p_bwd, np.where(drift < 0, p_fwd, p_cen))
+        p = np.where(drift > 0, p_fwd, np.where(drift < 0, p_bwd, p_cen))
         return p
 
     def _apply_bc(

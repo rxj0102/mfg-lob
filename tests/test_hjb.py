@@ -298,18 +298,17 @@ class TestLinearQuadratic:
 
 class TestPureAdvectionBackward:
     """
-    H = v·p, constant v, zero diffusion, zero cost.
+    Constant drift b = v, zero diffusion, zero cost.
 
-    The solver uses H_expl = -b*·p = -v·p (convention H = -f - b·p).
-    Scheme: u^n_i = u^{n+1}_i - dt·v·(D_bwd u^{n+1})_i  (for v > 0)
-    = (1-CFL)·u^{n+1}_i + CFL·u^{n+1}_{i-1}
+    The HJB for a cost to go is -u_t = b·u_x, so u(t, x) = g(x + v(T - t)):
+    the value now is the terminal value at the point the state will reach.
+    The scheme differences toward the side the drift points to:
+    u^n_i = u^{n+1}_i + dt·v·(D_fwd u^{n+1})_i  (for v > 0)
+          = (1-CFL)·u^{n+1}_i + CFL·u^{n+1}_{i+1}
 
-    Each backward step shifts the profile one CFL fraction to the RIGHT (higher index).
-    After N steps: u(0, x) ≈ g(x - v·T)  [rightward shift in x-space going backward].
-
-    Note: the terminal condition g(x) = sin(2πx/L) satisfies g(0)=g(L)=0 (Dirichlet BC).
-    The shifted solution g(x - vT) does NOT satisfy BC at x=0 when vT > 0, so there
-    is a boundary layer of width ~vT near x=0; tests check well inside this layer.
+    The terminal condition g(x) = sin(2πx/L) satisfies g(0)=g(L)=0 (Dirichlet BC).
+    The shifted solution g(x + vT) does not satisfy the BC at x=L, so there
+    is a boundary layer of width ~vT near x=L; tests check well away from it.
     """
 
     def _run(self, n_x, n_t, v=1.0, T=0.3, L=2.0):
@@ -334,16 +333,15 @@ class TestPureAdvectionBackward:
             assert tv < 15.0, f"TV too large at t index {k}: {tv:.2f}"
 
     def test_characteristics_transport(self):
-        """u(0, x) ≈ g(x - v·T) — profile shifts rightward going backward in time."""
+        """u(0, x) = g(x + v·T): the value is read off where the state ends up."""
         result, grid, tgrid = self._run(100, 500, v=1.0, T=0.2, L=3.0)
         u = result["value_function"]
         x = grid.points
         L = 3.0
-        # Backward upwind shifts rightward: u(0,x) ≈ sin(2π(x - vT)/L)
         shift = 1.0 * 0.2  # v * T = 0.2, about 7 grid spacings
-        u_exact_t0 = np.sin(2.0 * np.pi * (x - shift) / L)
-        # Check well inside the domain, away from the boundary layer at x=0
-        interior = slice(15, -5)
+        u_exact_t0 = np.sin(2.0 * np.pi * (x + shift) / L)
+        # Check well inside the domain, away from the boundary layer at x=L
+        interior = slice(5, -15)
         err = np.max(np.abs(u[0, interior] - u_exact_t0[interior]))
         assert err < 0.15, f"Advection error at t=0: {err:.3f}"
 
