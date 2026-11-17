@@ -198,8 +198,8 @@ Results are saved to `results/` as JSON (and PNG if matplotlib is installed).
 ## Tests
 
 ```bash
-pytest tests/ --ignore=tests/test_models.py -q
-# 459 passed
+pytest tests/ -q
+# 478 passed
 ```
 
 Test coverage spans grids, HJB solver, FP solver, MFG solver, all three models,
@@ -249,7 +249,7 @@ uv run pytest -q   # runs the test suite
 
 ### Runtime
 
-The test suite (474 tests) finishes in about 11 minutes on the machine above, including any data downloads it triggers.
+The test suite (478 tests) finishes in about 11 minutes on the machine above, including any data downloads it triggers.
 
 ### Citation
 
