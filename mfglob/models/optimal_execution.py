@@ -1,4 +1,4 @@
-"""Optimal execution MFG model (Cardaliaguet-Lehalle type).
+"""Optimal execution MFG model with crowding through a shared temporary impact cost.
 
 Reference:
   Cardaliaguet & Lehalle (2018), "Mean field game of controls and an
@@ -12,7 +12,7 @@ from mfglob.grids import Grid1D
 
 
 class OptimalExecutionMFG(MFGLOBModel):
-    """MFG model for optimal execution with permanent price impact.
+    """MFG model for optimal execution where the crowd raises each agent's trading cost.
 
     State:   q ∈ [0, Q0] — remaining inventory
     Control: ν ≥ 0       — execution rate (shares per unit time)
@@ -25,8 +25,13 @@ class OptimalExecutionMFG(MFGLOBModel):
     Running cost:
         f(q, ν, m) = φ q² + ψ ν² + λ η M(t) ν
 
-    where M(t) = ∫ ν(t,q) m(t,q) dq is the aggregate execution rate
-    (mean-field coupling through permanent price impact).
+    where M(t) = ∫ ν(t,q) m(t,q) dq is the aggregate execution rate. The
+    coupling is a temporary cost: the faster the crowd sells, the more each
+    unit an agent sells costs it now. This is not the coupling of
+    Cardaliaguet and Lehalle (2018), where the crowd's flow moves the price
+    permanently, dS = α M dt, and reaches each agent through its inventory
+    (a cost of order α M q). Agents here do not price the permanent move
+    η ∫ M dt that mfglob.price_impact reports.
 
     Optimal control (from FOC):
         ν* = max(0, (−∂u/∂q − λ η M(t)) / (2ψ))
