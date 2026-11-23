@@ -199,8 +199,9 @@ m*(x) ∝ exp( −[c_far·x + c_near·(exp(−κx)−1)] / (c_control·σ²) )
 
 ## 6. Price Impact Derivation
 
-For the OptimalExecutionMFG, the permanent price impact of a meta-order of
-size Q is:
+For the OptimalExecutionMFG, the price move attributed to a meta-order of
+size Q is measured as (agents in this model do not price it; their coupling is
+the temporary crowding cost η·ν·M):
 
 ```
 ΔS(Q) = η · ∫_0^T M*(t; Q) dt
@@ -208,7 +209,7 @@ size Q is:
 
 Empirically, many studies find ΔS(Q) ∝ √Q (the "square-root law").  The MFG
 model with small σ produces nearly linear impact (δ ≈ 1); larger σ is needed
-to recover δ ≈ 0.5 (Cardaliaguet & Lehalle 2018).
+to recover δ ≈ 0.5 in these runs.
 
 ---
 
