@@ -38,7 +38,7 @@ verified convergence guarantees (Barles-Souganidis theorem).
 - **Price impact**: extract ΔS(Q) from equilibrium; fit power-law exponent δ; compare to √Q law
 - **Calibration**: fit parameters to synthetic or empirical LOB data via DE + Nelder-Mead
 - **Convergence study**: verified O(Δx^{1.3–1.6}) convergence on refined grids
-- **459 tests** across all modules
+- **478 tests** across all modules
 
 ---
 
